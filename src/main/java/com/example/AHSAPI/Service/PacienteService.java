@@ -11,4 +11,11 @@ public class PacienteService {
     @Autowired
     private PacienteRepository pacienteRepository;
 
+    // datos que mando
+    // DNI, Apellido, Nombre, Direccion, Fecha Nacimiento, Sexo
+
+    public Paciente getPacienteByNumeroDocumento(int numerodocumento){
+        return pacienteRepository.findByNumerodocumento(numerodocumento);
+    }
+
 }

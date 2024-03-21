@@ -16,11 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "PacScan")
+@Table(name = "pacscan")
 public class Paciente {
 
     @Id
-    @GeneratedValue
     private int idpaciente;
     private int numhistclinica;
     private String apellido;
@@ -39,7 +38,7 @@ public class Paciente {
     private int idusuario;
     private Timestamp fechaalta;
     private Timestamp fechamodif;
-    private char subidomps;
+    private char subidomsp;
     private String mail;
     private int idpacinter3;
     private String origen;

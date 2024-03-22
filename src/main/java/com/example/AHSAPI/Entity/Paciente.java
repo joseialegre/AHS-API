@@ -50,4 +50,11 @@ public class Paciente {
     private int idprointer3modif;
     private int idestreferencia;
     private String domicilioreal;
+
+    public Paciente(int numerodocumento, String apellido, String nombre){
+        setNumerodocumento(numerodocumento);
+        setApellido(apellido);
+        setNombre(nombre);
+    }
+
 }

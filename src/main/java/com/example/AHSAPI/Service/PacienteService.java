@@ -28,10 +28,24 @@ public class PacienteService {
         // tratar el barcode string
         PacienteResponse pacienteResponse = barcodeRequest.barcodeToPaciente();
 
+        //Paciente paciente = new Paciente(pacienteResponse.getNumerodocumento(),pacienteResponse.getApellido(),pacienteResponse.getNombre());
+
+
+        try{
+            //busoo en la base de datos, si existe devuelvo los datos.
+            //aca tengo que comprobar si los datos coinciden
+            Paciente paciente = getPacienteByNumeroDocumento(pacienteResponse.getNumerodocumento());
+            pacienteResponse.setRegistrado("El paciente ya esta registrado en la BD");
+        }
+        catch(Exception e){
+            pacienteResponse.setRegistrado("El paciente no esta registrado en la BD");
+            //aca tengo que cargar la paciente
+        }
+
 
         //si existe DNI, retorno el objeto pacienteResponse (mapear)
         //si no existe, crear y  retornar pacienteResponse
-        //agregar comprobacion si algun dato no coincide
+        //agregar comprobacion si algun dato no coincide. contemplar?
 
         return pacienteResponse;
     }

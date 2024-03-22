@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class PacienteResponse {
     private String apellido;
     private String nombre;
-    int numerodocumento;
+    private int numerodocumento;
+    private String registrado;
 }

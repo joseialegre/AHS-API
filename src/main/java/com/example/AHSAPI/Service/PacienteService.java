@@ -29,9 +29,10 @@ public class PacienteService {
         PacienteResponse pacienteResponse = barcodeRequest.barcodeToPaciente();
 
 
-        //si existe DNI retorno el objeto pacienteResponse (mapear)
+        //si existe DNI, retorno el objeto pacienteResponse (mapear)
         //si no existe, crear y  retornar pacienteResponse
+        //agregar comprobacion si algun dato no coincide
 
-        return
+        return pacienteResponse;
     }
 }

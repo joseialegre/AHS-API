@@ -46,9 +46,11 @@ public class PacienteService {
         catch(Exception e){
             try{
                 pacienteResponse.setRegistrado("El paciente no estaba en la BD, se lo ha registrado");
-                //aca tengo que cargar la paciente
+                //aca tengo que cargar el paciente
                 Paciente paciente = new Paciente(pacienteResponse.getNumerodocumento(),pacienteResponse.getApellido(),pacienteResponse.getNombre());
-                savePaciente(paciente);
+                //savePaciente(paciente);
+                pacienteRepository.guardarPaciente(pacienteResponse.getNumerodocumento(),pacienteResponse.getApellido(),pacienteResponse.getNombre());
+
             }
             catch (Exception e2) {
                 pacienteResponse.setRegistrado(e2.toString());

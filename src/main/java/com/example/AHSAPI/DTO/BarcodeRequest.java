@@ -14,7 +14,6 @@ public class BarcodeRequest {
     // este es el JSON
     public PacienteResponse barcodeToPaciente() {
         PacienteResponse pacienteResponse = new PacienteResponse();
-
         if (barcodeData.startsWith("0")) { // Formato 1
             String[] parts = barcodeData.split("@");
             if (parts.length >= 8) {
@@ -30,7 +29,6 @@ public class BarcodeRequest {
                 pacienteResponse.setNombre(parts[5]);
             }
         }
-
         return pacienteResponse;
     }
 }

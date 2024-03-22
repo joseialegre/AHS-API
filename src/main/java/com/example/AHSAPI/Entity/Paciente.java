@@ -20,6 +20,7 @@ import java.util.List;
 public class Paciente {
 
     @Id
+    @GeneratedValue
     private int idpaciente;
     private int numhistclinica;
     private String apellido;

@@ -26,9 +26,10 @@ public class PacienteService {
     public PacienteResponse getPacienteResponse(BarcodeRequest barcodeRequest){
 
         // tratar el barcode string
+        barcodeRequest.barcodeToPaciente()
 
         //si existe DNI retorno el objeto pacienteResponse (mapear)
-        //si no existe, crear
+        //si no existe, crear y  retornar pacienteResponse
 
         return
     }

@@ -20,6 +20,8 @@ public class PacienteController {
 
     @PostMapping()
     public PacienteResponse barcodeScanRequest(@RequestBody BarcodeRequest barcodeRequest){
+
         return service.getPacienteResponse(barcodeRequest);
     }
+
 }

@@ -23,6 +23,11 @@ public class PacienteService {
         return paciente.get();
     }
 
+    public void savePaciente(Paciente paciente){
+        pacienteRepository.save(paciente);
+
+    }
+
     public PacienteResponse getPacienteResponse(BarcodeRequest barcodeRequest){
 
         // tratar el barcode string
@@ -32,14 +37,23 @@ public class PacienteService {
 
 
         try{
-            //busoo en la base de datos, si existe devuelvo los datos.
+            //busco en la base de datos, si existe devuelvo los datos.
             //aca tengo que comprobar si los datos coinciden
+
             Paciente paciente = getPacienteByNumeroDocumento(pacienteResponse.getNumerodocumento());
             pacienteResponse.setRegistrado("El paciente ya esta registrado en la BD");
         }
         catch(Exception e){
-            pacienteResponse.setRegistrado("El paciente no esta registrado en la BD");
-            //aca tengo que cargar la paciente
+            try{
+                pacienteResponse.setRegistrado("El paciente no estaba en la BD, se lo ha registrado");
+                //aca tengo que cargar la paciente
+                Paciente paciente = new Paciente(pacienteResponse.getNumerodocumento(),pacienteResponse.getApellido(),pacienteResponse.getNombre());
+                savePaciente(paciente);
+            }
+            catch (Exception e2) {
+                pacienteResponse.setRegistrado(e2.toString());
+            }
+
         }
 
 

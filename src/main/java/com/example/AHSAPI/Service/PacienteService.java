@@ -25,7 +25,6 @@ public class PacienteService {
 
     public void savePaciente(Paciente paciente){
         pacienteRepository.save(paciente);
-
     }
 
     public PacienteResponse getPacienteResponse(BarcodeRequest barcodeRequest){
@@ -33,20 +32,20 @@ public class PacienteService {
         // tratar el barcode string
         PacienteResponse pacienteResponse = barcodeRequest.barcodeToPaciente();
 
+        if(pacienteResponse.getNumerodocumento() == 0){
+            pacienteResponse.setRegistrado("Datos invalidos");
+            return pacienteResponse;
+        }
         //Paciente paciente = new Paciente(pacienteResponse.getNumerodocumento(),pacienteResponse.getApellido(),pacienteResponse.getNombre());
-
-
         try{
             //busco en la base de datos, si existe devuelvo los datos.
             //aca tengo que comprobar si los datos coinciden
-
             Paciente paciente = getPacienteByNumeroDocumento(pacienteResponse.getNumerodocumento());
             pacienteResponse.setRegistrado("El paciente ya esta registrado en la BD");
         }
         catch(Exception e){
             try{
-
-                //aca tengo que cargar el paciente
+                //Instancio el paciente
                 Paciente paciente = new Paciente(pacienteResponse.getNumerodocumento(),pacienteResponse.getApellido(),pacienteResponse.getNombre());
                 savePaciente(paciente);
                 //pacienteRepository.save(pacienteResponse.getNumerodocumento(),pacienteResponse.getApellido(),pacienteResponse.getNombre());
@@ -55,10 +54,7 @@ public class PacienteService {
             catch (Exception e2) {
                 pacienteResponse.setRegistrado(e2.toString());
             }
-
         }
-
-
         //si existe DNI, retorno el objeto pacienteResponse (mapear)
         //si no existe, crear y  retornar pacienteResponse
         //agregar comprobacion si algun dato no coincide. contemplar?

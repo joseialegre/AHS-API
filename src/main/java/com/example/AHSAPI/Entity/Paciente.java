@@ -59,8 +59,7 @@ public class Paciente {
         setNombre(nombre);
     }
 
-    public Paciente(int numerotramite,int numerodocumento, char ejemplar, String apellido, String nombre, Timestamp fechaemision, Timestamp fechavto ){
-
+    public Paciente(int numerotramite,int numerodocumento, char ejemplar, String apellido, String nombre, Timestamp fechaemision, Timestamp fechavto, char sexo, Timestamp fechanac ){
         setNumerotramite(numerotramite);
         setNumerodocumento(numerodocumento);
         setEjemplar(ejemplar);
@@ -69,6 +68,8 @@ public class Paciente {
         setFechaemision(fechaemision);
         setFechavto(fechavto);
         setIdtipodoc(3);
+        setSexo(sexo);
+        setFechanac(fechanac);
     }
 
 }

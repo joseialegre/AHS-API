@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -23,6 +25,10 @@ public class BarcodeRequest {
                     pacienteResponse.setNumerodocumento(Integer.parseInt(parts[4]));
                     pacienteResponse.setApellido(parts[1]);
                     pacienteResponse.setNombre(parts[2]);
+                    //pacienteResponse.setNumerotramite(Integer.parseInt(parts[0]));
+                    //pacienteResponse.setSexo(Integer.parseInt(parts[3]));
+                    //pacienteResponse.setFechanac(parts[5]);
+
                 } catch (Exception e) {
                     pacienteResponse.setNumerodocumento(0);
                 }

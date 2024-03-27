@@ -7,6 +7,7 @@ import com.example.AHSAPI.Repository.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,29 +24,69 @@ public class PacienteService {
         return paciente.get();
     }
 
+    public List<Paciente> getPacientesByNumeroDocumento(int numerodocumento){
+        List<Paciente> pacientes = pacienteRepository.BuscarPorNumeroDocumento(numerodocumento);
+        return pacientes;
+    }
+
+
+
     public void savePaciente(Paciente paciente){
         pacienteRepository.save(paciente);
     }
 
+
+    public PacienteResponse singlePaciente(){
+        //que hago si el paciente no se repite
+    }
+
+    public PacienteResponse multiplePaciente(){
+        //que hago si el paciente se repite
+    }
+
+    public PacienteResponse nonePaciente(){
+        //que hago no esta el paciente
+    }
+
     public PacienteResponse getPacienteResponse(BarcodeRequest barcodeRequest){
 
-        // tratar el barcode string
+
         PacienteResponse pacienteResponse = barcodeRequest.barcodeToPaciente();
 
         if(pacienteResponse.getNumerodocumento() == 0){
             pacienteResponse.setRegistrado("Datos invalidos");
             return pacienteResponse;
         }
-        //Paciente paciente = new Paciente(pacienteResponse.getNumerodocumento(),pacienteResponse.getApellido(),pacienteResponse.getNombre());
+
         try{
             //busco en la base de datos, si existe devuelvo los datos.
-            //aca tengo que comprobar si los datos coinciden
-            Paciente paciente = getPacienteByNumeroDocumento(pacienteResponse.getNumerodocumento());
+
+
+//            Paciente paciente = getPacienteByNumeroDocumento(pacienteResponse.getNumerodocumento());
+            List<Paciente> pacientes = getPacientesByNumeroDocumento(pacienteResponse.getNumerodocumento());
+
+            if(pacientes.size() == 1){
+
+            }
+            else {
+
+            }
+
+            switch (pacientes.size()){
+                case 1:
+            }
+
+            //Aqui si la lista tiene mas de un elemento significa que el paciente esta dos veces.
+            //si la lista tiene mas de un elemento tengo que ir a la funcion
+            //donde compara y modifica los datos.
+
+            //si la lista tiene solo un elemento hago lo de siempre
+
+
             pacienteResponse.setRegistrado("El paciente ya esta registrado en la BD");
         }
         catch(Exception e){
             try{
-                //Instancio el paciente
                 Paciente paciente = new Paciente(pacienteResponse.getNumerodocumento(),pacienteResponse.getApellido(),pacienteResponse.getNombre());
                 savePaciente(paciente);
                 //pacienteRepository.save(pacienteResponse.getNumerodocumento(),pacienteResponse.getApellido(),pacienteResponse.getNombre());
@@ -55,10 +96,6 @@ public class PacienteService {
                 pacienteResponse.setRegistrado(e2.toString());
             }
         }
-        //si existe DNI, retorno el objeto pacienteResponse (mapear)
-        //si no existe, crear y  retornar pacienteResponse
-        //agregar comprobacion si algun dato no coincide. contemplar?
-
         return pacienteResponse;
     }
 }

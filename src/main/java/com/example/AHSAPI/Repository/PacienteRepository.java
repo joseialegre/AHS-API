@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.batch.BatchProperties;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -21,6 +22,8 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
     @Query(value = "INSERT INTO pacscan (numerodocumento, apellido, nombre) VALUES (?1, ?2, ?3)", nativeQuery = true)
     Optional<PacienteResponse> save(int numeroDocumento, String apellido, String nombre);
 
+    @Procedure
+    List<Paciente> BuscarPorNumeroDocumento(int numerodocumento);
 
 
 

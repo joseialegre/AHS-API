@@ -36,16 +36,19 @@ public class PacienteService {
     }
 
 
-    public PacienteResponse singlePaciente(){
+    public PacienteResponse singlePaciente(PacienteResponse pacienteResponse){
         //que hago si el paciente no se repite
+        return pacienteResponse;
     }
 
-    public PacienteResponse multiplePaciente(){
+    public PacienteResponse multiplePaciente(PacienteResponse pacienteResponse){
         //que hago si el paciente se repite
+        return pacienteResponse;
     }
 
-    public PacienteResponse nonePaciente(){
+    public PacienteResponse nonePaciente(PacienteResponse pacienteResponse){
         //que hago no esta el paciente
+        return pacienteResponse;
     }
 
     public PacienteResponse getPacienteResponse(BarcodeRequest barcodeRequest){
@@ -73,7 +76,9 @@ public class PacienteService {
             }
 
             switch (pacientes.size()){
-                case 1:
+                case 1: singlePaciente(pacienteResponse); break;
+                case 0: nonePaciente(pacienteResponse); break;
+                default: multiplePaciente(pacienteResponse); break;
             }
 
             //Aqui si la lista tiene mas de un elemento significa que el paciente esta dos veces.

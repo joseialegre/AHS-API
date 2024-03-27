@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -49,13 +50,25 @@ public class Paciente {
     private String domicilioreal;
     private int numerotramite;
     private int ejemplar;
-    private int fechaemision;
-    private int fechavto;
+    private Timestamp fechaemision;
+    private Timestamp fechavto;
 
     public Paciente(int numerodocumento, String apellido, String nombre){
         setNumerodocumento(numerodocumento);
         setApellido(apellido);
         setNombre(nombre);
+    }
+
+    public Paciente(int numerotramite,int numerodocumento, char ejemplar, String apellido, String nombre, Timestamp fechaemision, Timestamp fechavto ){
+
+        setNumerotramite(numerotramite);
+        setNumerodocumento(numerodocumento);
+        setEjemplar(ejemplar);
+        setApellido(apellido);
+        setNombre(nombre);
+        setFechaemision(fechaemision);
+        setFechavto(fechavto);
+        setIdtipodoc(3);
     }
 
 }

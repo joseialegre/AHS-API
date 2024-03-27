@@ -22,7 +22,7 @@ public class Paciente {
     private int numhistclinica;
     private String apellido;
     private String nombre;
-    private int idtipodoc;
+    private int idtipodoc; //3
     private int numerodocumento;
     private String direccion;
     private int idlocalidad;
@@ -47,6 +47,10 @@ public class Paciente {
     private int idprointer3modif;
     private int idestreferencia;
     private String domicilioreal;
+    private int numerotramite;
+    private int ejemplar;
+    private int fechaemision;
+    private int fechavto;
 
     public Paciente(int numerodocumento, String apellido, String nombre){
         setNumerodocumento(numerodocumento);

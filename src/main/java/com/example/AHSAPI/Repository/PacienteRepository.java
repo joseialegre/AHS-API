@@ -1,5 +1,6 @@
 package com.example.AHSAPI.Repository;
 
+import com.example.AHSAPI.DTO.PacienteDTO;
 import com.example.AHSAPI.DTO.PacienteResponse;
 import com.example.AHSAPI.Entity.Paciente;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,10 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
     @Query(value = "INSERT INTO pacscan (numerodocumento, apellido, nombre) VALUES (?1, ?2, ?3)", nativeQuery = true)
     Optional<PacienteResponse> save(int numeroDocumento, String apellido, String nombre);
 
+//    @Procedure
+//    List<Paciente> BuscarPorNumeroDocumento(int numerodocumento);
     @Procedure
-    List<Paciente> BuscarPorNumeroDocumento(int numerodocumento);
-
+    List<PacienteDTO> BuscarPorNumeroDocumento(int numerodocumento);
 
 
 }

@@ -1,9 +1,11 @@
 package com.example.AHSAPI.Service;
 
 import com.example.AHSAPI.DTO.BarcodeRequest;
+import com.example.AHSAPI.DTO.PacienteDTO;
 import com.example.AHSAPI.DTO.PacienteResponse;
 import com.example.AHSAPI.Entity.Paciente;
 import com.example.AHSAPI.Repository.PacienteRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,21 +25,24 @@ public class PacienteService {
         Optional<Paciente> paciente = pacienteRepository.findByNumerodocumento(numerodocumento);
         return paciente.get();
     }
-
-    public List<Paciente> getPacientesByNumeroDocumento(int numerodocumento){
-        List<Paciente> pacientes = pacienteRepository.BuscarPorNumeroDocumento(numerodocumento);
+    @Transactional
+    public List<PacienteDTO> getPacientesByNumeroDocumento(int numerodocumento){
+        List<PacienteDTO> pacientes = pacienteRepository.BuscarPorNumeroDocumento(numerodocumento);
         return pacientes;
     }
 
 
 
-    public void savePaciente(Paciente paciente){
-        pacienteRepository.save(paciente);
-    }
+//    public void savePaciente(Paciente paciente){
+//        pacienteRepository.save(paciente);
+//    }
 
 
-    public PacienteResponse singlePaciente(PacienteResponse pacienteResponse){
+    public PacienteResponse singlePaciente(List<PacienteDTO> pacientes, PacienteResponse pacienteResponse){
         //que hago si el paciente no se repite
+        pacienteResponse.setNombre(pacientes.get(0).getNombre());
+        pacienteResponse.setApellido(pacientes.get(0).getApellido());
+
         return pacienteResponse;
     }
 
@@ -47,60 +52,51 @@ public class PacienteService {
     }
 
     public PacienteResponse nonePaciente(PacienteResponse pacienteResponse){
-        //que hago no esta el paciente
+        //que hago si no esta el paciente
+        //instanciar al paciente en la BD
+        Paciente paciente = new Paciente(pacienteResponse.getNumerodocumento(),pacienteResponse.getApellido(),pacienteResponse.getNombre());
+        //savePaciente(paciente);
+        pacienteResponse.setRegistrado("EL PACIENTE FUE REGISTRADO");
         return pacienteResponse;
     }
-
+    @Transactional
     public PacienteResponse getPacienteResponse(BarcodeRequest barcodeRequest){
 
 
         PacienteResponse pacienteResponse = barcodeRequest.barcodeToPaciente();
 
         if(pacienteResponse.getNumerodocumento() == 0){
+            //Error 404 input invalido
             pacienteResponse.setRegistrado("Datos invalidos");
             return pacienteResponse;
         }
 
-        try{
-            //busco en la base de datos, si existe devuelvo los datos.
+        //busco en la base de datos, si existe devuelvo los datos.
+        //traigo los pacientes de la BD
+        try {
+            List<PacienteDTO> pacientes = getPacientesByNumeroDocumento(pacienteResponse.getNumerodocumento());
 
-
-//            Paciente paciente = getPacienteByNumeroDocumento(pacienteResponse.getNumerodocumento());
-            List<Paciente> pacientes = getPacientesByNumeroDocumento(pacienteResponse.getNumerodocumento());
-
-            if(pacientes.size() == 1){
-
-            }
-            else {
-
-            }
-
-            switch (pacientes.size()){
-                case 1: singlePaciente(pacienteResponse); break;
-                case 0: nonePaciente(pacienteResponse); break;
-                default: multiplePaciente(pacienteResponse); break;
+            switch (pacientes.size()) {
+                case 1:
+                    singlePaciente(pacientes, pacienteResponse);
+                    break;
+                case 0:
+                    nonePaciente(pacienteResponse);
+                    break;
+                default:
+                    multiplePaciente(pacienteResponse);
+                    break;
             }
 
-            //Aqui si la lista tiene mas de un elemento significa que el paciente esta dos veces.
-            //si la lista tiene mas de un elemento tengo que ir a la funcion
-            //donde compara y modifica los datos.
-
-            //si la lista tiene solo un elemento hago lo de siempre
-
-
-            pacienteResponse.setRegistrado("El paciente ya esta registrado en la BD");
+        }catch (Exception e){
+            pacienteResponse.setRegistrado(e.toString());
+            return pacienteResponse;
         }
-        catch(Exception e){
-            try{
-                Paciente paciente = new Paciente(pacienteResponse.getNumerodocumento(),pacienteResponse.getApellido(),pacienteResponse.getNombre());
-                savePaciente(paciente);
-                //pacienteRepository.save(pacienteResponse.getNumerodocumento(),pacienteResponse.getApellido(),pacienteResponse.getNombre());
-                pacienteResponse.setRegistrado("El paciente no estaba en la BD, se lo ha registrado");
-            }
-            catch (Exception e2) {
-                pacienteResponse.setRegistrado(e2.toString());
-            }
-        }
+        //Aqui si la lista tiene mas de un elemento significa que el paciente esta dos veces.
+        //si la lista tiene mas de un elemento tengo que ir a la funcion
+        //donde compara y modifica los datos.
+
+        //si la lista tiene solo un elemento hago lo de siempre
         return pacienteResponse;
     }
 }

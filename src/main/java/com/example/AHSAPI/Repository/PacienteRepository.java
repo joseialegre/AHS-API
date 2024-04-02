@@ -26,7 +26,7 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 //    @Procedure
 //    List<Paciente> BuscarPorNumeroDocumento(int numerodocumento);
     @Procedure
-    List<PacienteDTO> BuscarPorNumeroDocumento(int numerodocumento);
+    List<Paciente> BuscarPorNumeroDocumento(int numerodocumento);
 
 
 }

@@ -25,9 +25,9 @@ public class PacienteService {
         Optional<Paciente> paciente = pacienteRepository.findByNumerodocumento(numerodocumento);
         return paciente.get();
     }
-    @Transactional
-    public List<PacienteDTO> getPacientesByNumeroDocumento(int numerodocumento){
-        List<PacienteDTO> pacientes = pacienteRepository.BuscarPorNumeroDocumento(numerodocumento);
+//    @Transactional
+    public List<Paciente> getPacientesByNumeroDocumento(int numerodocumento){
+        List<Paciente> pacientes = pacienteRepository.BuscarPorNumeroDocumento(numerodocumento);
         return pacientes;
     }
 
@@ -38,7 +38,7 @@ public class PacienteService {
 //    }
 
 
-    public PacienteResponse singlePaciente(List<PacienteDTO> pacientes, PacienteResponse pacienteResponse){
+    public PacienteResponse singlePaciente(List<Paciente> pacientes, PacienteResponse pacienteResponse){
         //que hago si el paciente no se repite
         pacienteResponse.setNombre(pacientes.get(0).getNombre());
         pacienteResponse.setApellido(pacientes.get(0).getApellido());
@@ -74,7 +74,7 @@ public class PacienteService {
         //busco en la base de datos, si existe devuelvo los datos.
         //traigo los pacientes de la BD
         try {
-            List<PacienteDTO> pacientes = getPacientesByNumeroDocumento(pacienteResponse.getNumerodocumento());
+            List<Paciente> pacientes = getPacientesByNumeroDocumento(pacienteResponse.getNumerodocumento());
 
             switch (pacientes.size()) {
                 case 1:

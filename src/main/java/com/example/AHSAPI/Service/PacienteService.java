@@ -67,7 +67,7 @@ public class PacienteService {
 
         if(pacienteResponse.getNumerodocumento() == 0){
             //Error 404 input invalido
-            pacienteResponse.setRegistrado("Datos invalidos");
+            //pacienteResponse.setRegistrado("Datos invalidos");
             return pacienteResponse;
         }
 

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,10 +28,11 @@ public class BarcodeRequest {
                     pacienteResponse.setNombre(parts[2]);
                     pacienteResponse.setNumerotramite(Integer.parseInt(parts[0]));
                     pacienteResponse.setSexo(parts[3].charAt(0));
-                    //pacienteResponse.setFechanac(parts[5]);
+                    pacienteResponse.setFechanac(stringToDate(parts[6]));
 
                 } catch (Exception e) {
                     pacienteResponse.setNumerodocumento(0);
+                    pacienteResponse.setRegistrado(e.toString());
                 }
             }
         } else if (barcodeData.startsWith("@")) { // Formato 2
@@ -46,6 +48,18 @@ public class BarcodeRequest {
             }
         }
         return pacienteResponse;
+    }
+
+    private Timestamp stringToDate(String string){
+        String dateString = string;
+
+        // Parseamos el string a un objeto LocalDate
+        LocalDate localDate = LocalDate.parse(dateString, java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+        // Creamos un Timestamp a partir del LocalDate
+        Timestamp timestamp = Timestamp.valueOf(localDate.atStartOfDay());
+
+        return timestamp;
     }
 
 }

@@ -31,6 +31,7 @@ public class BarcodeRequest {
                     pacienteResponse.setFechanac(stringToDate(parts[6]));
                     pacienteResponse.setIdtipodoc(3);
                     pacienteResponse.setFechavto(stringToDate(parts[7]));
+                    pacienteResponse.setEjemplar(parts[5].charAt(0));
 
                 } catch (Exception e) {
                     pacienteResponse.setNumerodocumento(0);

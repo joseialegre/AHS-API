@@ -23,12 +23,12 @@ public class Paciente {
 //    private int numhistclinica;
     private String apellido;
     private String nombre;
-//    private int idtipodoc; //3
+    private int idtipodoc; //3
     private int numerodocumento;
 //    private String direccion;
 //    private int idlocalidad;
-//    private Timestamp fechanac;
-//    private char sexo;
+    private Timestamp fechanac;
+    private char sexo;
 //    private String telefono;
 //    private int idobrasocial;
 //    private String nroafiliado;
@@ -48,10 +48,10 @@ public class Paciente {
 //    private int idprointer3modif;
 //    private int idestreferencia;
 //    private String domicilioreal;
-//    private int numerotramite;
-//    private int ejemplar;
-//    private Timestamp fechaemision;
-//    private Timestamp fechavto;
+    private int numerotramite;
+    private char ejemplar;
+    private Timestamp fechaemision;
+    private Timestamp fechavto;
 
     public Paciente(int numerodocumento, String apellido, String nombre){
         setNumerodocumento(numerodocumento);

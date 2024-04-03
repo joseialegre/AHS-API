@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +30,13 @@ public class PacienteService {
     public List<Paciente> getPacientesByNumeroDocumento(int numerodocumento){
         List<Paciente> pacientes = pacienteRepository.BuscarPorNumeroDocumento(numerodocumento);
         return pacientes;
+    }
+
+    public void setPaciente(String apellido, String nombre, int numerodocumento,
+                            char ejemplar, Timestamp fechaemision, Timestamp fechavto,
+                            int idtipodoc, char sexo, Timestamp fechanac){
+        pacienteRepository.InstanciarPaciente(apellido, nombre, numerodocumento,
+                ejemplar, fechaemision, fechavto, idtipodoc, sexo, fechanac);
     }
 
 
@@ -54,8 +62,13 @@ public class PacienteService {
     public PacienteResponse nonePaciente(PacienteResponse pacienteResponse){
         //que hago si no esta el paciente
         //instanciar al paciente en la BD
-        Paciente paciente = new Paciente(pacienteResponse.getNumerodocumento(),pacienteResponse.getApellido(),pacienteResponse.getNombre());
+        //Paciente paciente = new Paciente(pacienteResponse.getNumerodocumento(),pacienteResponse.getApellido(),pacienteResponse.getNombre());
         //savePaciente(paciente);
+
+        setPaciente(pacienteResponse.getApellido(), pacienteResponse.getNombre(), pacienteResponse.getNumerodocumento(),
+                pacienteResponse.getEjemplar(),pacienteResponse.getFechaemision(),pacienteResponse.getFechavto(),
+                pacienteResponse.getIdtipodoc(),pacienteResponse.getSexo(),pacienteResponse.getFechanac());
+
         pacienteResponse.setRegistrado("EL PACIENTE FUE REGISTRADO");
         return pacienteResponse;
     }

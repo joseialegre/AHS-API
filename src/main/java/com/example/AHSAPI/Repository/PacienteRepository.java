@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,5 +29,9 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
     @Procedure
     List<Paciente> BuscarPorNumeroDocumento(int numerodocumento);
 
+    @Procedure
+    void InstanciarPaciente(String apellido, String nombre, int numerodocumento,
+                            char ejemplar, Timestamp fechaemision, Timestamp fechavto,
+                            int idtipodoc, char sexo, Timestamp fechanac);
 
 }

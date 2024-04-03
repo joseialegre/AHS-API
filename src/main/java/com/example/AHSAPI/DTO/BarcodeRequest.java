@@ -30,7 +30,7 @@ public class BarcodeRequest {
                     pacienteResponse.setSexo(parts[3].charAt(0));
                     pacienteResponse.setFechanac(stringToDate(parts[6]));
                     pacienteResponse.setIdtipodoc(3);
-                    pacienteResponse.setFechavto(stringToDate(parts[7]));
+                    pacienteResponse.setFechaemision(stringToDate(parts[7]));
                     pacienteResponse.setEjemplar(parts[5].charAt(0));
 
                 } catch (Exception e) {

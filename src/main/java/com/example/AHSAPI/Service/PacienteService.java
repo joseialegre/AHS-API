@@ -33,11 +33,32 @@ public class PacienteService {
         return pacientes;
     }
 
-    public void setPaciente(String apellido, String nombre, int numerodocumento, int numerotramite,
-                            char ejemplar, Timestamp fechaemision, Timestamp fechavto,
-                            int idtipodoc, char sexo, Timestamp fechanac){
-        pacienteRepository.InstanciarPaciente(apellido, nombre, numerodocumento, numerotramite,
-                ejemplar, fechaemision, fechavto, idtipodoc, sexo, fechanac);
+    public void setPaciente(
+            int numerodocumento,
+            int numerotramite,
+            String apellido,
+            String nombre,
+            char sexo,
+            Timestamp fechaemision,
+            Timestamp fechavto,
+            Timestamp fechanac,
+            char ejemplar,
+            int idtipodoc
+
+
+        ){
+        pacienteRepository.InstanciarPaciente(
+                numerodocumento,
+                numerotramite,
+                apellido,
+                nombre,
+                sexo,
+                fechaemision,
+                fechavto,
+                fechanac,
+                ejemplar,
+                idtipodoc
+        );
     }
 
 
@@ -52,6 +73,7 @@ public class PacienteService {
         pacienteResponse.setNombre(pacientes.get(0).getNombre());
         pacienteResponse.setApellido(pacientes.get(0).getApellido());
         pacienteResponse.setRegistrado("EL PACIENTE YA ESTA REGISTRADO");
+        //return pacienteDataVerify(pacientes, pacienteResponse);
         return pacienteResponse;
     }
 
@@ -66,9 +88,17 @@ public class PacienteService {
         //Paciente paciente = new Paciente(pacienteResponse.getNumerodocumento(),pacienteResponse.getApellido(),pacienteResponse.getNombre());
         //savePaciente(paciente);
 
-        setPaciente(pacienteResponse.getApellido(), pacienteResponse.getNombre(), pacienteResponse.getNumerodocumento(),
-                pacienteResponse.getNumerotramite(), pacienteResponse.getEjemplar(),pacienteResponse.getFechaemision(),pacienteResponse.getFechavto(),
-                pacienteResponse.getIdtipodoc(),pacienteResponse.getSexo(),pacienteResponse.getFechanac());
+        setPaciente(
+                pacienteResponse.getNumerodocumento(),
+                pacienteResponse.getNumerotramite(),
+                pacienteResponse.getApellido(),
+                pacienteResponse.getNombre(),
+                pacienteResponse.getSexo(),
+                pacienteResponse.getFechaemision(),
+                pacienteResponse.getFechavto(),
+                pacienteResponse.getFechanac(),
+                pacienteResponse.getEjemplar(),
+                pacienteResponse.getIdtipodoc());
 
         pacienteResponse.setRegistrado("EL PACIENTE FUE REGISTRADO");
         return pacienteResponse;
@@ -103,7 +133,7 @@ public class PacienteService {
             }
 
         }catch (Exception e){
-            pacienteResponse.setRegistrado(e.toString());
+            pacienteResponse.setRegistrado(e.toString()+"error en service");
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return pacienteResponse;
         }
@@ -117,7 +147,7 @@ public class PacienteService {
 
     public PacienteResponse pacienteDataVerify(List<Paciente> pacientes, PacienteResponse pacienteResponse){
         //comparo el numero de tramite.
-        //si numero de tramite es diferente
+        //if(pacientes.getFirst().numero)//si numero de tramite es diferente
             //si fecha emision es menor a la que esta en la BD, nada
             //si fecha emision es mayor a la que esta en la BD, inserto
         //otro campo es diferente

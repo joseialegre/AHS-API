@@ -20,15 +20,25 @@ public class Paciente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idpaciente")
     private int idpaciente;
-//    private int numhistclinica;
+    private int numerodocumento;
+    private int numerotramite;
     private String apellido;
     private String nombre;
-//    private int idtipodoc; //3
-    private int numerodocumento;
+    private char sexo;
+    private Timestamp fechaemision;
+    private Timestamp fechavto;
+    private Timestamp fechanac;
+    private char ejemplar;
+    private int idtipodoc; //3
 //    private String direccion;
 //    private int idlocalidad;
-//    private Timestamp fechanac;
-//    private char sexo;
+
+
+
+
+
+
+//    private int numhistclinica;
 //    private String telefono;
 //    private int idobrasocial;
 //    private String nroafiliado;
@@ -48,10 +58,7 @@ public class Paciente {
 //    private int idprointer3modif;
 //    private int idestreferencia;
 //    private String domicilioreal;
-//    private int numerotramite;
-//    private int ejemplar;
-//    private Timestamp fechaemision;
-//    private Timestamp fechavto;
+
 
     public Paciente(int numerodocumento, String apellido, String nombre){
         setNumerodocumento(numerodocumento);
@@ -60,16 +67,16 @@ public class Paciente {
     }
 
     public Paciente(int numerotramite,int numerodocumento, char ejemplar, String apellido, String nombre, Timestamp fechaemision, Timestamp fechavto, char sexo, Timestamp fechanac ){
-//        setNumerotramite(numerotramite);
+        setNumerotramite(numerotramite);
         setNumerodocumento(numerodocumento);
-//        setEjemplar(ejemplar);
+        setEjemplar(ejemplar);
         setApellido(apellido);
         setNombre(nombre);
-//        setFechaemision(fechaemision);
-//        setFechavto(fechavto);
-//        setIdtipodoc(3);
-//        setSexo(sexo);
-//        setFechanac(fechanac);
+        setFechaemision(fechaemision);
+        setFechavto(fechavto);
+        setIdtipodoc(3);
+        setSexo(sexo);
+        setFechanac(fechanac);
     }
 
 }

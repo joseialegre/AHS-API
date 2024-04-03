@@ -13,16 +13,18 @@ import java.sql.Timestamp;
 @Builder
 public class PacienteResponse {
 
-    private String apellido;
-    private String nombre;
     private int numerodocumento;
     private int numerotramite;
-    private char ejemplar;
+    private String apellido;
+    private String nombre;
+    private char sexo;
     private Timestamp fechaemision;
     private Timestamp fechavto;
-    private int idtipodoc;
-    private char sexo;
     private Timestamp fechanac;
+    private char ejemplar;
+    private int idtipodoc;
+
+
 
     private String registrado;
     private int error;

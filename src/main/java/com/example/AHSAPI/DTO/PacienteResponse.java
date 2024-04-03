@@ -16,13 +16,13 @@ public class PacienteResponse {
     private String apellido;
     private String nombre;
     private int numerodocumento;
-//    private int numerotramite;
-//    private char ejemplar;
-//    private Timestamp fechaemision;
-//    private Timestamp fechavto;
-//    private int idtipodoc;
-//    private int sexo;
-//    private Timestamp fechanac;
+    private int numerotramite;
+    private char ejemplar;
+    private Timestamp fechaemision;
+    private Timestamp fechavto;
+    private int idtipodoc;
+    private char sexo;
+    private Timestamp fechanac;
 
     private String registrado;
 }

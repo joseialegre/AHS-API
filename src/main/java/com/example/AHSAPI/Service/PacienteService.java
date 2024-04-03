@@ -57,7 +57,6 @@ public class PacienteService {
 
     public PacienteResponse multiplePaciente(List<Paciente> pacientes, PacienteResponse pacienteResponse){
         //que hago si el paciente se repite
-
         return pacienteResponse;
     }
 
@@ -113,6 +112,16 @@ public class PacienteService {
         //donde compara y modifica los datos.
 
         //si la lista tiene solo un elemento hago lo de siempre
+        return pacienteResponse;
+    }
+
+    public PacienteResponse pacienteDataVerify(List<Paciente> pacientes, PacienteResponse pacienteResponse){
+        //comparo el numero de tramite.
+        //si numero de tramite es diferente
+            //si fecha emision es menor a la que esta en la BD, nada
+            //si fecha emision es mayor a la que esta en la BD, inserto
+        //otro campo es diferente
+            //actualizo
         return pacienteResponse;
     }
 }

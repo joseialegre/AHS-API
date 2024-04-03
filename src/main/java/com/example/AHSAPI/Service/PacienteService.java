@@ -55,8 +55,9 @@ public class PacienteService {
         return pacienteResponse;
     }
 
-    public PacienteResponse multiplePaciente(PacienteResponse pacienteResponse){
+    public PacienteResponse multiplePaciente(List<Paciente> pacientes, PacienteResponse pacienteResponse){
         //que hago si el paciente se repite
+
         return pacienteResponse;
     }
 
@@ -98,7 +99,7 @@ public class PacienteService {
                     nonePaciente(pacienteResponse);
                     break;
                 default:
-                    multiplePaciente(pacienteResponse);
+                    multiplePaciente(pacientes, pacienteResponse);
                     break;
             }
 

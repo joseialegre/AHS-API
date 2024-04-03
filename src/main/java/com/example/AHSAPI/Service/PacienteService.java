@@ -42,7 +42,7 @@ public class PacienteService {
         //que hago si el paciente no se repite
         pacienteResponse.setNombre(pacientes.get(0).getNombre());
         pacienteResponse.setApellido(pacientes.get(0).getApellido());
-
+        pacienteResponse.setRegistrado("EL PACIENTE YA ESTA REGISTRADO");
         return pacienteResponse;
     }
 

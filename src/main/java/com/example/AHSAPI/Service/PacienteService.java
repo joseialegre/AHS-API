@@ -25,7 +25,7 @@ public class PacienteService {
         Optional<Paciente> paciente = pacienteRepository.findByNumerodocumento(numerodocumento);
         return paciente.get();
     }
-//    @Transactional
+    @Transactional
     public List<Paciente> getPacientesByNumeroDocumento(int numerodocumento){
         List<Paciente> pacientes = pacienteRepository.BuscarPorNumeroDocumento(numerodocumento);
         return pacientes;
@@ -42,6 +42,7 @@ public class PacienteService {
         //que hago si el paciente no se repite
         pacienteResponse.setNombre(pacientes.get(0).getNombre());
         pacienteResponse.setApellido(pacientes.get(0).getApellido());
+        pacienteResponse.setRegistrado("EL PACIENTE YA ESTA REGISTRADO");
 
         return pacienteResponse;
     }
@@ -63,9 +64,10 @@ public class PacienteService {
     public PacienteResponse getPacienteResponse(BarcodeRequest barcodeRequest){
 
 
+
         PacienteResponse pacienteResponse = barcodeRequest.barcodeToPaciente();
 
-        if(pacienteResponse.getNumerodocumento() == 0){
+        if(pacienteResponse.getError() == 1){
             //Error 404 input invalido
             pacienteResponse.setRegistrado("Datos invalidos");
             return pacienteResponse;

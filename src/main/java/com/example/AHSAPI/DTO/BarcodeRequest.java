@@ -5,7 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,14 +25,18 @@ public class BarcodeRequest {
             if (parts.length >= 8) {
                 try {
                     pacienteResponse.setNumerodocumento(Integer.parseInt(parts[4]));
+                    pacienteResponse.setNumerotramite(Integer.parseInt(parts[0]));
                     pacienteResponse.setApellido(parts[1]);
                     pacienteResponse.setNombre(parts[2]);
-                    //pacienteResponse.setNumerotramite(Integer.parseInt(parts[0]));
-                    //pacienteResponse.setSexo(Integer.parseInt(parts[3]));
-                    //pacienteResponse.setFechanac(parts[5]);
+                    pacienteResponse.setSexo(parts[3].charAt(0));
 
+                    pacienteResponse.setEjemplar(parts[5].charAt(0));
+                    pacienteResponse.setFechanac(stringToDate(parts[6]));
+                    pacienteResponse.setFechavto(stringToDate(parts[7]));
+                    pacienteResponse.setIdtipodoc(3);
                 } catch (Exception e) {
-                    pacienteResponse.setNumerodocumento(0);
+                    pacienteResponse.setError(1);
+
                 }
             }
         } else if (barcodeData.startsWith("@")) { // Formato 2
@@ -46,6 +52,17 @@ public class BarcodeRequest {
             }
         }
         return pacienteResponse;
+    }
+    private Timestamp stringToDate(String string){
+        String dateString = string;
+
+        // Parseamos el string a un objeto LocalDate
+        LocalDate localDate = LocalDate.parse(dateString, java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+        // Creamos un Timestamp a partir del LocalDate
+        Timestamp timestamp = Timestamp.valueOf(localDate.atStartOfDay());
+
+        return timestamp;
     }
 
 }

@@ -30,8 +30,7 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
     List<Paciente> BuscarPorNumeroDocumento(int numerodocumento);
 
     @Procedure
-    void InstanciarPaciente(String apellido, String nombre, int numerodocumento,
+    void InstanciarPaciente(String apellido, String nombre, int numerodocumento, int numerotramite,
                             char ejemplar, Timestamp fechaemision, Timestamp fechavto,
                             int idtipodoc, char sexo, Timestamp fechanac);
-
 }

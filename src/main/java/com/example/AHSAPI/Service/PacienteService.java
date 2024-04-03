@@ -8,6 +8,7 @@ import com.example.AHSAPI.Repository.PacienteRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -32,10 +33,10 @@ public class PacienteService {
         return pacientes;
     }
 
-    public void setPaciente(String apellido, String nombre, int numerodocumento,
+    public void setPaciente(String apellido, String nombre, int numerodocumento, int numerotramite,
                             char ejemplar, Timestamp fechaemision, Timestamp fechavto,
                             int idtipodoc, char sexo, Timestamp fechanac){
-        pacienteRepository.InstanciarPaciente(apellido, nombre, numerodocumento,
+        pacienteRepository.InstanciarPaciente(apellido, nombre, numerodocumento, numerotramite,
                 ejemplar, fechaemision, fechavto, idtipodoc, sexo, fechanac);
     }
 
@@ -66,7 +67,7 @@ public class PacienteService {
         //savePaciente(paciente);
 
         setPaciente(pacienteResponse.getApellido(), pacienteResponse.getNombre(), pacienteResponse.getNumerodocumento(),
-                pacienteResponse.getEjemplar(),pacienteResponse.getFechaemision(),pacienteResponse.getFechavto(),
+                pacienteResponse.getNumerotramite(), pacienteResponse.getEjemplar(),pacienteResponse.getFechaemision(),pacienteResponse.getFechavto(),
                 pacienteResponse.getIdtipodoc(),pacienteResponse.getSexo(),pacienteResponse.getFechanac());
 
         pacienteResponse.setRegistrado("EL PACIENTE FUE REGISTRADO");
@@ -103,6 +104,7 @@ public class PacienteService {
 
         }catch (Exception e){
             pacienteResponse.setRegistrado(e.toString());
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return pacienteResponse;
         }
         //Aqui si la lista tiene mas de un elemento significa que el paciente esta dos veces.

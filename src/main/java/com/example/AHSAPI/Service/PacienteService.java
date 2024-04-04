@@ -94,7 +94,8 @@ public class PacienteService {
 
             if(pacientes.size()!=0){
                 pacienteTreatment(pacientes,pacienteResponse);
-
+            }else{
+                nonePaciente(pacienteResponse);
             }
 
         }catch (Exception e){
@@ -132,7 +133,7 @@ public class PacienteService {
         for(int i=0;i<pacientes.size();i++){
             if(pacientes.get(i).getNumerotramite()==pacienteResponse.getNumerotramite()){
                 //es el mismo dni. no hago nada. muestro los datos guardados
-                pacienteResponse.setRegistrado("PACIENTE ACTUALIZADO");
+                pacienteResponse.setRegistrado("PACIENTE ESTA ACTUALIZADO");
                 return pacienteResponse;
             }else{
                 if(indexTemp==-1){

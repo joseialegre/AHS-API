@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -90,16 +91,10 @@ public class PacienteService {
         try {
             List<Paciente> pacientes = getPacientesByNumeroDocumento(pacienteResponse.getNumerodocumento());
 
-            switch (pacientes.size()) {
-                case 1:
-                    singlePaciente(pacientes, pacienteResponse);
-                    break;
-                case 0:
-                    nonePaciente(pacienteResponse);
-                    break;
-                default:
-                    multiplePaciente(pacientes, pacienteResponse);
-                    break;
+
+            if(pacientes.size()!=0){
+                pacienteTreatment(pacientes,pacienteResponse);
+
             }
 
         }catch (Exception e){
@@ -130,5 +125,58 @@ public class PacienteService {
             //actualizo
         return pacienteResponse;
     }
+    public PacienteResponse pacienteTreatment(List<Paciente> pacientes, PacienteResponse pacienteResponse){
+        //Timestamp fechaEmisionTemp=null;
+
+        int indexTemp=-1;
+        for(int i=0;i<pacientes.size();i++){
+            if(pacientes.get(i).getNumerotramite()==pacienteResponse.getNumerotramite()){
+                //es el mismo dni. no hago nada. muestro los datos guardados
+                pacienteResponse.setRegistrado("PACIENTE ACTUALIZADO");
+                return pacienteResponse;
+            }else{
+                if(indexTemp==-1){
+                    //fechaEmisionTemp=pacientes.get(i).getFechaemision();
+                    indexTemp=i;
+                }
+                else{
+                    int comparacionFecha = pacientes.get(i).getFechaemision().compareTo(pacientes.get(indexTemp).getFechaemision());
+                    if(comparacionFecha>0){
+                        //fechaEmisionTemp=pacientes.get(i).getFechaemision();
+                        indexTemp=i;
+                    }
+                }
+            }
+        }
+        if(indexTemp!=-1){
+            int comparacionFecha = pacienteResponse.getFechaemision().compareTo(pacientes.get(indexTemp).getFechaemision());
+            if(comparacionFecha>0){
+                //insertar paciente
+                return nonePaciente(pacienteResponse);
+            }else{
+                //devolver el mas nuevo (pacientes.get(indexTemp))
+                //mapear los datos de pacientes.get(indexTemp)) en pacienteResponse
+                //crear funcion para esto
+                pacienteResponse.setNombre(pacientes.get(indexTemp).getNombre());
+                pacienteResponse.setApellido(pacientes.get(indexTemp).getApellido());
+                pacienteResponse.setNumerodocumento(pacientes.get(indexTemp).getNumerodocumento());
+                pacienteResponse.setNumerotramite(pacientes.get(indexTemp).getNumerotramite());
+                pacienteResponse.setEjemplar(pacientes.get(indexTemp).getEjemplar());
+                pacienteResponse.setFechaemision(pacientes.get(indexTemp).getFechaemision());
+                pacienteResponse.setFechavto(pacientes.get(indexTemp).getFechavto());
+                pacienteResponse.setIdtipodoc(pacientes.get(indexTemp).getIdtipodoc());
+                pacienteResponse.setSexo(pacientes.get(indexTemp).getSexo());
+                pacienteResponse.setFechanac(pacientes.get(indexTemp).getFechanac());
+                pacienteResponse.setRegistrado("DATOS MAS RECIENTES");
+                return pacienteResponse;
+            }
+        }
+
+        return pacienteResponse;
+    }
 }
-//tengo la lista. busco si se repite algun numerotramite, si re repite. busco si mi fechaemision es mayor a todas.
+//tengo la lista. busco si se repite algun numerotramite, si no se repite. busco la mayor fechaemision, y comparo si es mayor que la mia.
+
+//funciones pendientes:
+//  funcion para comparar timestamp
+//  funcion para mapear

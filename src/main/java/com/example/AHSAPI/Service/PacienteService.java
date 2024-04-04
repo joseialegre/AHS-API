@@ -49,8 +49,8 @@ public class PacienteService {
 
     public PacienteResponse singlePaciente(List<Paciente> pacientes, PacienteResponse pacienteResponse){
         //que hago si el paciente no se repite
-        pacienteResponse.setNombre(pacientes.get(0).getNombre());
-        pacienteResponse.setApellido(pacientes.get(0).getApellido());
+
+        pacienteDataVerify(pacientes,pacienteResponse);
         pacienteResponse.setRegistrado("EL PACIENTE YA ESTA REGISTRADO");
         return pacienteResponse;
     }
@@ -117,11 +117,18 @@ public class PacienteService {
 
     public PacienteResponse pacienteDataVerify(List<Paciente> pacientes, PacienteResponse pacienteResponse){
         //comparo el numero de tramite.
-        //si numero de tramite es diferente
-            //si fecha emision es menor a la que esta en la BD, nada
-            //si fecha emision es mayor a la que esta en la BD, inserto
+        if(pacientes.get(0).getNumerotramite()!=pacienteResponse.getNumerotramite()){//si numero de tramite es diferente
+
+            int comparacion = pacientes.get(0).getFechaemision().compareTo(pacienteResponse.getFechaemision());
+            //si mi fecha emision guardada es menor a la nueva
+            if(comparacion < 0) {
+                return nonePaciente(pacienteResponse);
+            }
+
+        }
         //otro campo es diferente
             //actualizo
         return pacienteResponse;
     }
 }
+//tengo la lista. busco si se repite algun numerotramite, si re repite. busco si mi fechaemision es mayor a todas.

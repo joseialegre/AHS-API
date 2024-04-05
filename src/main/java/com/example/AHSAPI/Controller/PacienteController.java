@@ -7,7 +7,7 @@ import com.example.AHSAPI.Service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:8529")
 @RestController
 public class PacienteController {
 

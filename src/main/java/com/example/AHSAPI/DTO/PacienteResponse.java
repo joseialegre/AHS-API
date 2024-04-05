@@ -25,5 +25,5 @@ public class PacienteResponse {
     private Timestamp fechanac;
 
     private String registrado;
-    private int error;
+    private String error;
 }

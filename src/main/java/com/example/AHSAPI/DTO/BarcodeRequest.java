@@ -45,8 +45,15 @@ public class BarcodeRequest {
                     pacienteResponse.setNumerodocumento(Integer.parseInt(parts[1]));
                     pacienteResponse.setApellido(parts[4]);
                     pacienteResponse.setNombre(parts[5]);
+                    pacienteResponse.setEjemplar(parts[2].charAt(0));
+                    pacienteResponse.setFechanac(stringToDate(parts[7]));
+                    pacienteResponse.setSexo(parts[8].charAt(0));
+                    pacienteResponse.setFechaemision(stringToDate(parts[9]));
+                    pacienteResponse.setNumerotramite(Integer.parseInt(parts[10]));
+                    pacienteResponse.setFechavto(stringToDate(parts[12]));
+                    pacienteResponse.setIdtipodoc(3);
                 } catch (Exception e) {
-                    pacienteResponse.setNumerodocumento(0);
+                    pacienteResponse.setError(e.toString());
                 }
             }
         }

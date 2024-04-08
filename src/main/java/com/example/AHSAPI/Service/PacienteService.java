@@ -97,11 +97,25 @@ public class PacienteService {
                 //insertar paciente
                 return instanciarPaciente(pacienteResponse);
             }else{
-                //devolver el mas nuevo (pacientes.get(indexTemp))
-                //mapear los datos de pacientes.get(indexTemp)) en pacienteResponse
-                //crear funcion para esto
 
                 return pacienteMapping(pacientes,pacienteResponse,indexTemp);
+            }
+        }
+
+        return pacienteResponse;
+    }
+
+    public PacienteResponse pacienteTreatment2(List<Paciente> pacientes, PacienteResponse pacienteResponse){
+
+        if(pacientes.get(0).getNumerotramite()==pacienteResponse.getNumerotramite()){
+            pacienteResponse.setRegistrado("LOS DATOS ESTAN VIGNTES");
+        }
+        else{
+            if(TimestampComparison(pacienteResponse.getFechaemision(),pacientes.get(0).getFechaemision())){
+                return instanciarPaciente(pacienteResponse);
+            }
+            else{
+                return pacienteMapping(pacientes,pacienteResponse,0);
             }
         }
 

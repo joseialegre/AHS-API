@@ -38,11 +38,13 @@ public class BarcodeRequest {
                     pacienteResponse.setRegistrado(e.toString());
                 }
             }
-        } else if (barcodeData.startsWith("@")) { // Formato 2
-            parts = barcodeData.split("@|\"");
+        } else if (barcodeData.startsWith("@") || barcodeData.startsWith("\"")) {
+            String barcodeData2 = barcodeData.replaceAll("\"", "@");// Formato 2
+            System.out.println(barcodeData2.toString());
+            parts = barcodeData2.split("@");
             if (parts.length >= 6) {
                 try {
-                    pacienteResponse.setNumerodocumento(Integer.parseInt(parts[1]));
+                    pacienteResponse.setNumerodocumento(Integer.parseInt(parts[1].trim()));
                     pacienteResponse.setApellido(parts[4]);
                     pacienteResponse.setNombre(parts[5]);
                     pacienteResponse.setEjemplar(parts[2].charAt(0));
@@ -63,13 +65,20 @@ public class BarcodeRequest {
     private Timestamp stringToDate(String string){
         String dateString = string;
 
-        // Parseamos el string a un objeto LocalDate
-        LocalDate localDate = LocalDate.parse(dateString, java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-
+        try {
+            // Parseamos el string a un objeto LocalDate
+            LocalDate localDate = LocalDate.parse(dateString, java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            Timestamp timestamp = Timestamp.valueOf(localDate.atStartOfDay());
+            return timestamp;
+        }catch (Exception e ){
+            LocalDate localDate = LocalDate.parse(dateString, java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            Timestamp timestamp = Timestamp.valueOf(localDate.atStartOfDay());
+            return timestamp;
+        }
         // Creamos un Timestamp a partir del LocalDate
-        Timestamp timestamp = Timestamp.valueOf(localDate.atStartOfDay());
+        //Timestamp timestamp = Timestamp.valueOf(localDate.atStartOfDay());
 
-        return timestamp;
+        //return timestamp;
     }
 
 }

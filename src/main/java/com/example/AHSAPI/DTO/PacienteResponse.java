@@ -23,7 +23,6 @@ public class PacienteResponse {
     private int idtipodoc;
     private char sexo;
     private Timestamp fechanac;
-
     private String registrado;
     private String error;
 }

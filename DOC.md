@@ -59,7 +59,7 @@ public void setPaciente(String apellido, String nombre, int numerodocumento, int
     }
 ```
 ##### getPacienteResponse()
-La funcion ***getPacienteResponse*** es la principal funcion de la clase ***servicePaciente***
+La función ***getPacienteResponse*** es la principal función de la clase ***servicePaciente***
 
 ```
 @Transactional
@@ -89,4 +89,78 @@ La funcion ***getPacienteResponse*** es la principal funcion de la clase ***serv
     }
 ```
 
+#### pacienteTreatment()
+La función ***pacienteTreatment*** controla la lista de pacientes que la Base de Datos nos devuelve.
+Controla si la lista esta vacia, en caso de que no lo esté busca los datos mas recientes. Si la lista está
+vacia, el paciente se instancia llamando a la función [instanciarPaciente()](instanciarPaciente)
+La variable ***indexTemp*** ayuda a encontrar el registro mas reciente para luego compararlo con el ingresado.
+
+```
+public PacienteResponse pacienteTreatment(List<Paciente> pacientes, PacienteResponse pacienteResponse){
+        int indexTemp=-1;
+        for(int i=0;i<pacientes.size();i++){
+            if(pacientes.get(i).getNumerotramite()==pacienteResponse.getNumerotramite()){
+                //es el mismo numerotramite. no hago nada. muestro los datos guardados
+                pacienteResponse.setRegistrado("PACIENTE ESTA ACTUALIZADO");
+                return pacienteResponse;
+            }else{
+                if(indexTemp==-1){
+                    indexTemp=i;
+                }
+                else{
+                    if(TimestampComparison(pacientes.get(i).getFechaemision(),pacientes.get(indexTemp).getFechaemision())){
+                        indexTemp=i;
+                    }
+                }
+            }
+        }
+        if(indexTemp!=-1){
+            if(TimestampComparison(pacienteResponse.getFechaemision(),pacientes.get(indexTemp).getFechaemision())){
+                //insertar paciente
+                return instanciarPaciente(pacienteResponse);
+            }else{
+
+                return pacienteMapping(pacientes,pacienteResponse,indexTemp);
+            }
+        }
+
+        return pacienteResponse;
+    }
+
+```
+
+#### TimestampComparison()
+***TimestampComparison()*** es una función para comparar dos variables que sean de tipo Timestamp
+Retorna **True** cuando *a* es mas reciente que *b*
+
+```
+public boolean TimestampComparison(Timestamp a,Timestamp b){
+        int x = a.compareTo(b);
+        if(x>0) return true;
+        else return false;
+    }
+```
+
+#### pacienteMapping()
+La función ***pacienteMapping*** mapea los datos del paciente que estan en la lista segun indexTemp, a nuestro JSON 
+de respuesta, la clase ***pacienteResponse***
+
+```
+public PacienteResponse pacienteMapping(List<Paciente> pacientes, PacienteResponse pacienteResponse, int indexTemp){
+        pacienteResponse.setNombre(pacientes.get(indexTemp).getNombre());
+        pacienteResponse.setApellido(pacientes.get(indexTemp).getApellido());
+        pacienteResponse.setNumerodocumento(pacientes.get(indexTemp).getNumerodocumento());
+        pacienteResponse.setNumerotramite(pacientes.get(indexTemp).getNumerotramite());
+        pacienteResponse.setEjemplar(pacientes.get(indexTemp).getEjemplar());
+        pacienteResponse.setFechaemision(pacientes.get(indexTemp).getFechaemision());
+        pacienteResponse.setFechavto(pacientes.get(indexTemp).getFechavto());
+        pacienteResponse.setIdtipodoc(pacientes.get(indexTemp).getIdtipodoc());
+        pacienteResponse.setSexo(pacientes.get(indexTemp).getSexo());
+        pacienteResponse.setFechanac(pacientes.get(indexTemp).getFechanac());
+        pacienteResponse.setRegistrado("DATOS MAS RECIENTES");
+        return pacienteResponse;
+    }
+```
+
+### DTO
 

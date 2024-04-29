@@ -1,3 +1,61 @@
+# Configuración
+
+### Conexión a Base de Datos:
+Configurar archivo ***application.properties***
+
+
+`AHS-API\src\main\resources\application.properties`
+
+```
+spring.application.name=AHS-API
+spring.datasource.url=jdbc:sqlserver://192.168.254.21:1433;databaseName=scnr;encrypt=true;trustServerCertificate=true
+spring.datasource.username=scnr
+spring.datasource.password=scnr01
+spring.datasource.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
+```
+Conexión al servidor:
+
+`spring.datasource.url=jdbc:sqlserver://192.168.254.21:1433;databaseName=scnr;encrypt=true;trustServerCertificate=true`
+
+Configuración de usuario:
+
+```spring.datasource.username=scnr```
+
+`spring.datasource.password=scnr01`
+
+### Conexión del Cliente a la API:
+
+#### Archivo ***scanner.js***
+Función que conecta el cliente con la API.
+
+Es necesario tener un input en el archivo HTML para pasarlo como parametro
+una vez que llamamos a la función.
+
+En la variable ***api-ip*** colocamos la IP y puerto donde la API está hosteada. Por defecto:
+`http://192.168.254.240:3000`
+
+
+
+# Deploy
+
+### Compilar aplicación de Java:
+
+    mvn clean
+    mvn clean package
+
+### Crear la imagen docker:
+    docker build -t ahs-api .
+
+### Ejecutar el container: (en caso de prueba)
+    docker run -p 8080:8080 ahs-api
+
+### Para subir la imagen al repositorio:
+
+    docker tag "nombre-de-la-imagen" joseialegre/ahs-api:latest
+    docker image push joseialegre/ahs-api:latest
+
+# Código
+
 ## Capas
 
 * Controller
@@ -91,8 +149,10 @@ La función ***getPacienteResponse*** es la principal función de la clase ***se
 
 #### pacienteTreatment()
 La función ***pacienteTreatment*** controla la lista de pacientes que la Base de Datos nos devuelve.
+
 Controla si la lista esta vacia, en caso de que no lo esté busca los datos mas recientes. Si la lista está
-vacia, el paciente se instancia llamando a la función [instanciarPaciente()](instanciarPaciente)
+vacia, el paciente se instancia llamando a la función ***instanciarPaciente()***.
+
 La variable ***indexTemp*** ayuda a encontrar el registro mas reciente para luego compararlo con el ingresado.
 
 ```

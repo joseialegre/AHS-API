@@ -21,11 +21,7 @@ public class PacienteService {
     private PacienteRepository pacienteRepository;
 
 
-    public Paciente getPacienteByNumeroDocumento(int numerodocumento){
-        Optional<Paciente> paciente = pacienteRepository.findByNumerodocumento(numerodocumento);
-        return paciente.get();
-    }
-//    @Transactional
+
     public List<Paciente> getPacientesByNumeroDocumento(int numerodocumento){
         List<Paciente> pacientes = pacienteRepository.BuscarPorNumeroDocumento(numerodocumento);
         return pacientes;
@@ -79,20 +75,16 @@ public class PacienteService {
                 return pacienteResponse;
             }else{
                 if(indexTemp==-1){
-                    //fechaEmisionTemp=pacientes.get(i).getFechaemision();
                     indexTemp=i;
                 }
                 else{
-                    //int comparacionFecha = pacientes.get(i).getFechaemision().compareTo(pacientes.get(indexTemp).getFechaemision());
                     if(TimestampComparison(pacientes.get(i).getFechaemision(),pacientes.get(indexTemp).getFechaemision())){
-                        //fechaEmisionTemp=pacientes.get(i).getFechaemision();
                         indexTemp=i;
                     }
                 }
             }
         }
         if(indexTemp!=-1){
-            //int comparacionFecha = pacienteResponse.getFechaemision().compareTo(pacientes.get(indexTemp).getFechaemision());
             if(TimestampComparison(pacienteResponse.getFechaemision(),pacientes.get(indexTemp).getFechaemision())){
                 //insertar paciente
                 return instanciarPaciente(pacienteResponse);
@@ -105,27 +97,12 @@ public class PacienteService {
         return pacienteResponse;
     }
 
-    public PacienteResponse pacienteTreatment2(List<Paciente> pacientes, PacienteResponse pacienteResponse){
-
-        if(pacientes.get(0).getNumerotramite()==pacienteResponse.getNumerotramite()){
-            pacienteResponse.setRegistrado("LOS DATOS ESTAN VIGNTES");
-        }
-        else{
-            if(TimestampComparison(pacienteResponse.getFechaemision(),pacientes.get(0).getFechaemision())){
-                return instanciarPaciente(pacienteResponse);
-            }
-            else{
-                return pacienteMapping(pacientes,pacienteResponse,0);
-            }
-        }
-
-        return pacienteResponse;
-    }
     public boolean TimestampComparison(Timestamp a,Timestamp b){
         int x = a.compareTo(b);
         if(x>0) return true;
         else return false;
     }
+
     public PacienteResponse pacienteMapping(List<Paciente> pacientes, PacienteResponse pacienteResponse, int indexTemp){
         pacienteResponse.setNombre(pacientes.get(indexTemp).getNombre());
         pacienteResponse.setApellido(pacientes.get(indexTemp).getApellido());
@@ -141,8 +118,3 @@ public class PacienteService {
         return pacienteResponse;
     }
 }
-//tengo la lista. busco si se repite algun numerotramite, si no se repite. busco la mayor fechaemision, y comparo si es mayor que la mia.
-
-//funciones pendientes:
-//  funcion para comparar timestamp
-//  funcion para mapear

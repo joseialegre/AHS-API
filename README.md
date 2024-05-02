@@ -9,9 +9,9 @@ Configurar archivo ***application.properties***
 
 ```
 spring.application.name=AHS-API
-spring.datasource.url=jdbc:sqlserver://192.168.254.21:1433;databaseName=scnr;encrypt=true;trustServerCertificate=true
-spring.datasource.username=scnr
-spring.datasource.password=scnr01
+spring.datasource.url=jdbc:sqlserver://"databaseip";databaseName="dbname";encrypt=true;trustServerCertificate=true
+spring.datasource.username="user"
+spring.datasource.password="password"
 spring.datasource.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
 ```
 Conexión al servidor:

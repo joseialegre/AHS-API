@@ -16,13 +16,13 @@ spring.datasource.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
 ```
 Conexión al servidor:
 
-`spring.datasource.url=jdbc:sqlserver://192.168.254.21:1433;databaseName=scnr;encrypt=true;trustServerCertificate=true`
+`spring.datasource.url=jdbc:sqlserver://"databaseip";databaseName=scnr;encrypt=true;trustServerCertificate=true`
 
 Configuración de usuario:
 
-```spring.datasource.username=scnr```
+```spring.datasource.username="user"```
 
-`spring.datasource.password=scnr01`
+`spring.datasource.password="password"`
 
 ### Conexión del Cliente a la API:
 

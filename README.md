@@ -1,4 +1,3 @@
-La documentación está en desarrollo...
 # Configuración
 
 ### Conexión a Base de Datos:

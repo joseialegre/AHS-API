@@ -108,9 +108,22 @@ COPY src/main/java/com/example/AHSAPI/AhsApiApplication.java /app/src/main/java/
 * Service
 * Repository
 * Entity
+
 ### Controller
 
-S
+#### PacienteController
+* Esta clase es la mas superficial en la arquitectura. Es la que establece el End-Point
+
+##### barcodeScanRequest()
+```
+@PostMapping()
+public PacienteResponse barcodeScanRequest(@RequestBody BarcodeRequest barcodeRequest){
+
+    return service.getPacienteResponse(barcodeRequest);
+}
+```
+Esta funcion es lo primero que se ejecuta en la API. Llamando al servicio y devolviendo los resultados.
+
 
 ### Repository
 
@@ -272,6 +285,135 @@ public PacienteResponse pacienteMapping(List<Paciente> pacientes, PacienteRespon
 ```
 
 ### DTO
-....
+* En este directorio se encuentran clases de utilidad
+#### BarcodeRequest
+En esta clase procesamos el String que recibimos del FrontEnd y lo convertimos en informacion del paciente
+```
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
+public class BarcodeRequest {
+    private String barcodeData;
+    // este es el JSON
+    public PacienteResponse barcodeToPaciente() {
+        PacienteResponse pacienteResponse = new PacienteResponse();
+        String[] parts;
 
-### Documentation still in proccess... :)
+        if (barcodeData.startsWith("0")) { // Formato 1
+            parts = barcodeData.split("@|\"");
+            if (parts.length >= 8) {
+                try {
+                    pacienteResponse.setNumerodocumento(Integer.parseInt(parts[4]));
+                    pacienteResponse.setApellido(parts[1]);
+                    pacienteResponse.setNombre(parts[2]);
+                    pacienteResponse.setNumerotramite(Integer.parseInt(parts[0]));
+                    pacienteResponse.setSexo(parts[3].charAt(0));
+                    pacienteResponse.setFechanac(stringToDate(parts[6]));
+                    pacienteResponse.setIdtipodoc(3);
+                    pacienteResponse.setFechaemision(stringToDate(parts[7]));
+                    pacienteResponse.setEjemplar(parts[5].charAt(0));
+
+                } catch (Exception e) {
+                    pacienteResponse.setNumerodocumento(0);
+                    pacienteResponse.setRegistrado(e.toString());
+                }
+            }
+        } else if (barcodeData.startsWith("@") || barcodeData.startsWith("\"")) {
+            String barcodeData2 = barcodeData.replaceAll("\"", "@");// Formato 2
+            System.out.println(barcodeData2.toString());
+            parts = barcodeData2.split("@");
+            if (parts.length >= 6) {
+                try {
+                    pacienteResponse.setNumerodocumento(Integer.parseInt(parts[1].trim()));
+                    pacienteResponse.setApellido(parts[4]);
+                    pacienteResponse.setNombre(parts[5]);
+                    pacienteResponse.setEjemplar(parts[2].charAt(0));
+                    pacienteResponse.setFechanac(stringToDate(parts[7]));
+                    pacienteResponse.setSexo(parts[8].charAt(0));
+                    pacienteResponse.setFechaemision(stringToDate(parts[9]));
+                    pacienteResponse.setNumerotramite(Integer.parseInt(parts[10]));
+                    pacienteResponse.setFechavto(stringToDate(parts[12]));
+                    pacienteResponse.setIdtipodoc(3);
+                } catch (Exception e) {
+                    pacienteResponse.setError(e.toString());
+                }
+            }
+        }
+        return pacienteResponse;
+    }
+
+    private Timestamp stringToDate(String string){
+        String dateString = string;
+
+        try {
+            // Parseamos el string a un objeto LocalDate
+            LocalDate localDate = LocalDate.parse(dateString, java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            Timestamp timestamp = Timestamp.valueOf(localDate.atStartOfDay());
+            return timestamp;
+        }catch (Exception e ){
+            LocalDate localDate = LocalDate.parse(dateString, java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            Timestamp timestamp = Timestamp.valueOf(localDate.atStartOfDay());
+            return timestamp;
+        }
+        
+    }
+
+}
+```
+
+#### PacienteResponse
+* Esta clase representa los datos obtenidos del documento, para luego representarlo en un formato JSON
+```
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
+public class PacienteResponse {
+
+    private String apellido;
+    private String nombre;
+    private int numerodocumento;
+    private int numerotramite;
+    private char ejemplar;
+    private Timestamp fechaemision;
+    private Timestamp fechavto;
+    private int idtipodoc;
+    private char sexo;
+    private Timestamp fechanac;
+    private String registrado;
+    private String error;
+}
+```
+
+### Entity
+* Este directorio es donde definimos las entidades del proyecto. En este caso, el paciente.
+
+#### Paciente
+* Esta clase relaciona los datos obtenidos desde la Base de Datos para representar al paciente.
+
+```
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "pacscan")
+public class Paciente {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idpaciente")
+    private int idpaciente;
+    private String apellido;
+    private String nombre;
+    private int idtipodoc; //3
+    private int numerodocumento;
+    private Timestamp fechanac;
+    private char sexo;
+    private int numerotramite;
+    private char ejemplar;
+    private Timestamp fechaemision;
+    private Timestamp fechavto;
+    
+}
+```
